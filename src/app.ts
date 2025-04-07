@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Express } from "express";
 // const helmet = require("helmet");
 // const xss = require("xss-clean");
 // const mongoSanitize = require("express-mongo-sanitize");
@@ -15,7 +15,7 @@ import { errorConverter, errorHandler } from "./middlewares/error";
 import ApiError from "./utils/ApiError";
 import config from "./configs";
 
-const createApp = () => {
+const createApp = (): Express => {
   const app = express();
 
   // if (config.env !== "test") {

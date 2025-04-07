@@ -8,6 +8,14 @@ dotenv.config({ path: path.join(__dirname, "../../.env") });
 const envSchema = z.object({
   NODE_ENV: z.enum(["production", "development", "test"]),
   PORT: z.coerce.number().default(3000),
+  POSTGRES_USER: z.string(),
+  POSTGRES_PASSWORD: z.string(),
+  POSTGRES_DB: z.string(),
+  POSTGRES_HOST: z.string().default("localhost"),
+  POSTGRES_PORT: z.coerce.number().default(5432),
+
+  DATABASE_URL: z.string().optional(),
+
   //   MONGODB_URL: z.string().min(1, "MongoDB URL is required"),
   //   JWT_SECRET: z.string().min(1, "JWT secret key is required"),
   //   JWT_ACCESS_EXPIRATION_MINUTES: z.coerce.number().default(30),
@@ -36,6 +44,16 @@ const env = parsedEnv.data;
 const config = {
   env: env.NODE_ENV,
   port: env.PORT,
+  postgres: {
+    user: env.POSTGRES_USER,
+    password: env.POSTGRES_PASSWORD,
+    db: env.POSTGRES_DB,
+    host: env.POSTGRES_HOST,
+    port: env.POSTGRES_PORT,
+    url:
+      env.DATABASE_URL ||
+      `postgresql://${env.POSTGRES_USER}:${env.POSTGRES_PASSWORD}@${env.POSTGRES_HOST}:${env.POSTGRES_PORT}/${env.POSTGRES_DB}?schema=public`, // Fallback to generate DATABASE_URL if not provided
+  },
   //   mongoose: {
   //     url: env.MONGODB_URL + (env.NODE_ENV === "test" ? "-test" : ""),
   //     options: {

@@ -2,13 +2,20 @@ import httpStatus from "http-status";
 import config from "../configs/index";
 import logger from "../configs/logger";
 import ApiError from "../utils/ApiError";
+import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 
-export const errorConverter = (err: any, req: any, res: any, next: any) => {
+export const errorConverter: ErrorRequestHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   let error = err;
   if (!(error instanceof ApiError)) {
-    const statusCode = error.statusCode
-      ? httpStatus.BAD_REQUEST
-      : httpStatus.INTERNAL_SERVER_ERROR;
+    const statusCode =
+      "statusCode" in error
+        ? httpStatus.BAD_REQUEST
+        : httpStatus.INTERNAL_SERVER_ERROR;
     const message = error.message || httpStatus[statusCode];
     error = new ApiError(statusCode, message, false, err.stack);
   }
@@ -16,7 +23,12 @@ export const errorConverter = (err: any, req: any, res: any, next: any) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-export const errorHandler = (err: any, req: any, res: any, next: any) => {
+export const errorHandler: ErrorRequestHandler = (
+  err: ApiError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   let { statusCode, message } = err;
   if (config.env === "production" && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;

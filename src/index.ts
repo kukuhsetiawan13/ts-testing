@@ -1,10 +1,12 @@
-import config from './configs/index'
+import config from "./configs/index";
 import logger from "./configs/logger";
-import createApp from './app'
+import createApp from "./app";
+import { Express } from "express";
+import { Server } from "http";
 
-const app = createApp()
+const app: Express = createApp();
 
-const server = app.listen(config.port, () => {
+const server: Server = app.listen(config.port, () => {
   logger.info(`Listening to port ${config.port}`);
 });
 

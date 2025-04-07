@@ -1,9 +1,10 @@
-import express from "express";
+import express, { Router } from "express";
 import config from "../../configs/index";
+import { Route } from "../../interfaces/routes/index";
 
-const router = express.Router();
+const router: Router = express.Router();
 
-const defaultRoutes: any = [];
+const defaultRoutes: Route[] = [];
 
 // const devRoutes = [
 //   // routes available only in development mode
@@ -13,11 +14,10 @@ const defaultRoutes: any = [];
 //   },
 // ];
 
-defaultRoutes.forEach((route: any) => {
+defaultRoutes.forEach((route: Route) => {
   router.use(route.path, route.route);
 });
 
-/* istanbul ignore next */
 if (config.env === "development") {
   //   devRoutes.forEach((route) => {
   //     router.use(route.path, route.route);
