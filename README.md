@@ -25,7 +25,11 @@ Follow the steps below to set up the project locally:
 Before getting started, make sure you have the following installed:
 
 - **Node.js** (>= 16.x)
-- **Docker** (for running the app in containers)
-- **Docker Compose** (for managing multi-container Docker applications)
+- **Docker**
+- **Docker Compose**
 
-### Clone the Repository
+## Migrations
+
+- **Create migration file**: `npx prisma migrate dev --name file-name --create-only`
+- **Execute migrations**: `npx prisma migrate deploy`
+- **Update Prisma Client and generate types**: `npx prisma generate`
